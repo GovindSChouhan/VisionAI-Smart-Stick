@@ -1,0 +1,102 @@
+<!--
+Purpose: Browser dashboard for SmartStick's live status and annotated video.
+Explanation: "This is a deliberately small monitoring interface; it
+  polls the Python JSON endpoint and displays the MJPEG stream without moving
+  safety decisions into the browser."
+Key Concepts: semantic HTML, CSS Grid, Fetch API, DOM updates, periodic polling.
+Important Things to Remember: It is not a Node/npm project. Flask serves this
+  plain file directly. The cane remains functional when no browser is open.
+Dependencies: a modern browser; Flask routes /video and /sensors.
+Why This File Exists: It is a readable monitoring screen, not the safety
+  controller; the Pi remains functional when no browser is connected.
+Depends On: web.py routes /, /sensors, and /video.
+Depended On By: Flask serves it when a browser requests /.
+
+Source notes: fetch(), Response.ok, setInterval(), and textContent are standard
+Browser APIs documented by MDN. The dashboard layout is project-specific.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartStick Dashboard</title>
+  <style>
+    /* Project-specific accessible dark dashboard; no external CSS framework. */
+    :root { color-scheme: dark; }
+    body { margin: 0; background: #111; color: #eee; font-family: Arial, sans-serif; padding: 16px; text-align: center; }
+    main { max-width: 760px; margin: auto; }
+    h1 { margin: 8px 0 16px; font-size: 1.5rem; }
+    #connection-warning { display: none; background: #7f1d1d; border-radius: 6px; padding: 10px; margin-bottom: 12px; }
+    #video { width: 100%; max-width: 640px; border: 2px solid #333; border-radius: 8px; background: #222; }
+    .status { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-top: 16px; }
+    .card { background: #1c1c1c; border-radius: 8px; padding: 12px; }
+    .label { color: #aaa; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; }
+    .value { margin-top: 5px; font-size: 1.15rem; font-weight: bold; }
+    .ok { color: #4ade80; } .alert { color: #f87171; } .unknown { color: #facc15; }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="connection-warning" role="alert">Cannot reach SmartStick. Is main.py running?</div>
+    <h1>SmartStick — Live Assistive Navigation</h1>
+    <img id="video" src="/video" alt="Annotated live camera feed">
+    <section class="status" aria-label="Live sensor status">
+      <div class="card"><div class="label">Left distance</div><div class="value unknown" id="left">--</div></div>
+      <div class="card"><div class="label">Right distance</div><div class="value unknown" id="right">--</div></div>
+      <div class="card"><div class="label">Floor distance</div><div class="value unknown" id="down">--</div></div>
+      <div class="card"><div class="label">Person</div><div class="value unknown" id="person">--</div></div>
+      <div class="card"><div class="label">Chair</div><div class="value unknown" id="chair">--</div></div>
+      <div class="card"><div class="label">Upward stairs</div><div class="value unknown" id="stair-up">--</div></div>
+      <div class="card"><div class="label">Downward stairs</div><div class="value unknown" id="stair-down">--</div></div>
+    </section>
+  </main>
+  <script>
+    // Browser API (MDN): Fetch JSON from Flask once per second; no build tooling.
+    async function pollSensors() {
+      try {
+        const response = await fetch("/sensors", { cache: "no-store" });
+        if (!response.ok) throw new Error("HTTP response was not OK");
+        const data = await response.json();
+        document.getElementById("connection-warning").style.display = "none";
+        setDistance("left", data.left);
+        setDistance("right", data.right);
+        setDistance("down", data.down);
+        setFlag("person", data.person, "Detected", "None");
+        setFlag("chair", data.chair, "Detected", "None");
+        setFlag("stair-up", data.stair_up, "Ahead", "Clear");
+        setFlag("stair-down", data.stair_down, "Ahead", "Clear");
+      } catch (error) {
+        // Important edge case: dashboard failure must not affect cane safety.
+        document.getElementById("connection-warning").style.display = "block";
+      }
+    }
+
+    // Standard DOM pattern: show an honest unavailable state for JSON null.
+    function setDistance(id, centimetres) {
+      const element = document.getElementById(id);
+      const available = Number.isFinite(centimetres);
+      element.textContent = available ? `${centimetres} cm` : "Unavailable";
+      element.className = `value ${available ? "ok" : "unknown"}`;
+    }
+
+    // Standard DOM pattern: visually distinguish detected hazards from clear state.
+    function setFlag(id, active, activeText, inactiveText) {
+      const element = document.getElementById(id);
+      element.textContent = active ? activeText : inactiveText;
+      element.className = `value ${active ? "alert" : "ok"}`;
+    }
+
+    // Browser API (MDN): Standard setInterval polling pattern.
+    pollSensors();
+    window.setInterval(pollSensors, 1000);
+  </script>
+</body>
+</html>
+<!--
+INTERVIEW NOTES
+Q: Does the browser decide alerts? A: No. It only displays values; alerts.py
+decides safety messages on the Pi, so closing this page does not stop the cane.
+Call map: browser load/setInterval -> pollSensors -> setDistance and setFlag.
+Remember: pollSensors is called at page load and every 1000 milliseconds.
+-->

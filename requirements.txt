@@ -1,0 +1,17 @@
+# Purpose: Python packages installed into SmartStick's virtual environment.
+#  Explanation: "I install web-only Python packages with pip, but use
+# Raspberry Pi OS packages for hardware drivers because they match the Pi OS
+# camera/GPIO stack more reliably than generic PyPI wheels."
+# Key Concepts: pip requirements, virtual environment, platform packages.
+# Important Things to Remember: Picamera2, OpenCV, NumPy, and RPi.GPIO must be
+# installed with apt; create the venv with --system-site-packages to access them.
+# Dependencies: pip, Raspberry Pi OS Bookworm or later, and apt packages listed
+# in README.md. This file alone is not a complete hardware installation.
+# Why This File Exists: Lets pip install Python packages in one reproducible step.
+# Depends On: pip. Depended On By: the Pi setup command in README.md.
+# Source: Standard pip requirements-file format.
+
+Flask>=3.0,<4.0
+
+# INTERVIEW NOTES: This file intentionally contains Flask only. Using Pi OS
+# packages for camera/GPIO/OpenCV avoids common Raspberry Pi wheel conflicts.

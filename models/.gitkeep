@@ -1,0 +1,11 @@
+# Purpose: Keep the required models/ folder present in source control.
+# Interview Explanation: "The pretrained model is a separately downloaded
+# deployment asset; this marker documents its expected location."
+# Key Concepts: Git does not track empty directories.
+# Important Things to Remember: Copy both MobileNetSSD model files here.
+# Dependencies: None.
+# Why This File Exists: Git needs a file to preserve an otherwise empty folder.
+# Depends On: Git. Depended On By: developers placing model files here.
+# Source: Standard Git .gitkeep convention.
+
+# INTERVIEW NOTES: .gitkeep is not loaded by Python; it only documents layout.
