@@ -15,7 +15,7 @@ Depended On By: main.py starts its worker thread.
 
 Source notes: subprocess.Popen is the documented Python standard-library API.
 The priority-selector and cooldown are common implementation patterns, written
-for this project rather than copied from a specific external source.
+for this project rather than copied from a specific external source.     
 """
 
 from __future__ import annotations
