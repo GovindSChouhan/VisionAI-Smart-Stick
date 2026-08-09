@@ -8,7 +8,7 @@ Important Things to Remember: This is Python only. There is no npm, Node.js,
 package.json, or JavaScript build step.
 Dependencies: Raspberry Pi OS, Python, Picamera2, audio tools, model files.
 Source notes: Links in References are official library/vendor documentation.
--->
+--comment>
 
 # SmartStick
 
