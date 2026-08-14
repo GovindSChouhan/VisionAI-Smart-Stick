@@ -2,7 +2,7 @@
 Purpose: Choose one highest-priority safety message and speak it non-blockingly.
  Explanation: "The alert engine is a safety arbitration layer. It
   converts many simultaneous sensor/AI signals into one understandable spoken
-  instruction, always prioritising the greatest immediate risk."
+  instruction, always prioritising the greatest immediate risk."    
 Key Concepts: priority rules, cooldowns, non-blocking subprocesses, polling.
 Important Things to Remember: stairs suppress obstacle alerts automatically
   because a stair rule wins first. Audio must never overlap.
