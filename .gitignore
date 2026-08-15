@@ -5,7 +5,7 @@
 # Important Things to Remember: Keep the .prototxt/.caffemodel backups safe,
 # but do not commit large model files unless your repository policy permits it.
 # Dependencies: Git (optional).
-# Why This File Exists: Prevents generated files and large model assets from
+# Why This File Exists: Prevents generated files and large model assets from        
 # being accidentally committed. Depends On: Git. Depended On By: Git only.
 # Source: Standard Git ignore pattern.
 
