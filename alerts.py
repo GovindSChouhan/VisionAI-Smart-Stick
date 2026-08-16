@@ -5,7 +5,7 @@ Purpose: Choose one highest-priority safety message and speak it non-blockingly.
   instruction, always prioritising the greatest immediate risk."    
 Key Concepts: priority rules, cooldowns, non-blocking subprocesses, polling.
 Important Things to Remember: stairs suppress obstacle alerts automatically
-  because a stair rule wins first. Audio must never overlap.
+  because a stair rule wins first. Audio must never overlap.    
 Dependencies: espeak and aplay installed on Raspberry Pi OS; Python standard
   library; SensorSnapshot and VisionSnapshot from this project.
 Why This File Exists: All warning priority and audio timing live in one
