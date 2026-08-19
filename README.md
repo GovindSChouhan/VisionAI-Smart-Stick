@@ -135,7 +135,7 @@ Start with **PROJECT_GUIDE.md** for the complete technical explanation behind th
 - Improve enclosure design and battery management.
 - Add user-configurable alert profiles.
 
-## Author
+## Author(About me :)
 
 Created by **Govind Singh Chouhan**.
 
