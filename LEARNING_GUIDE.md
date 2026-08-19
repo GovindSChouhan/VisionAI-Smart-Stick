@@ -82,7 +82,7 @@ Browser: index.html fetches /sensors every second and displays /video
 6. **Too many warnings:** raise the relevant threshold/tolerance slowly and
    test again in a controlled environment.
 
-## Interview recap
+## MY Revision recap
 
 **Why not put everything in one file?** Separate modules reduce risk. Hardware
 timing, AI inference, audio policy, and HTTP requests change for different
